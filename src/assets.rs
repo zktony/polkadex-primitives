@@ -28,4 +28,6 @@ pub enum AssetId {
     DOT, // TODO: Enabled in Parachain upgrade
     CHAINSAFE(H160),
     // PARACHAIN(para_id, network, palletInstance, assetID),
+    BTC,
+    USD
 }
