@@ -21,13 +21,14 @@ use codec::{Decode, Encode};
 use serde::{Deserialize, Serialize};
 use sp_core::{RuntimeDebug, H160};
 
+/// Enumerated asset on chain
 #[derive(Encode, Decode, Copy, Clone, PartialEq, Eq, Ord, PartialOrd, RuntimeDebug)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 pub enum AssetId {
+    /// PDEX the native currency of the chain
     POLKADEX,
-    DOT, // TODO: Enabled in Parachain upgrade
-    CHAINSAFE(H160),
-    // PARACHAIN(para_id, network, palletInstance, assetID),
-    BTC,
-    USD
+    /// Generic enumerated assed
+    /// Range 0 - 0x00000000FFFFFFFF (2^32)-1 is reserved for protected tokens
+    /// the values under 1000 are used for ISO 4217 Numeric Curency codes
+    Asset(u64),
 }
