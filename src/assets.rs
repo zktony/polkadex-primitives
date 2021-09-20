@@ -29,5 +29,6 @@ pub enum AssetId {
     CHAINSAFE(H160),
     // PARACHAIN(para_id, network, palletInstance, assetID),
     BTC,
-    USD
+    USD,
+    Asset(u64)
 }
