@@ -16,13 +16,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-use codec::{Decode, Encode};
+use codec::{Decode, Encode, HasCompact, MaxEncodedLen};
 #[cfg(feature = "std")]
 use serde::{Deserialize, Serialize};
 use sp_core::{RuntimeDebug, H160};
-
+use sp_runtime::traits::{MaybeSerializeDeserialize};
 /// Enumerated asset on chain
-#[derive(Encode, Decode, Copy, Clone, PartialEq, Eq, Ord, PartialOrd, RuntimeDebug)]
+#[derive(Encode, Decode, Copy, Clone, PartialEq, Eq, Ord, PartialOrd, RuntimeDebug, MaxEncodedLen)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 pub enum AssetId {
     /// PDEX the native currency of the chain
@@ -31,4 +31,10 @@ pub enum AssetId {
     /// Range 0 - 0x00000000FFFFFFFF (2^32)-1 is reserved for protected tokens
     /// the values under 1000 are used for ISO 4217 Numeric Curency codes
     Asset(u64),
+}
+
+impl Default for AssetId {
+    fn default() -> Self {
+        AssetId::POLKADEX
+    }
 }
