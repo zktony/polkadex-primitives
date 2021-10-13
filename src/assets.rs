@@ -16,7 +16,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-use codec::{Decode, Encode, HasCompact, MaxEncodedLen};
+use codec::{Decode, Encode, HasCompact, MaxEncodedLen, EncodeAsRef};
 #[cfg(feature = "std")]
 use serde::{Deserialize, Serialize};
 use sp_core::{RuntimeDebug, H160};
@@ -31,10 +31,12 @@ pub enum AssetId {
     /// Range 0 - 0x00000000FFFFFFFF (2^32)-1 is reserved for protected tokens
     /// the values under 1000 are used for ISO 4217 Numeric Curency codes
     Asset(u64),
+
+    None
 }
 
 impl Default for AssetId {
     fn default() -> Self {
-        AssetId::POLKADEX
+        AssetId::None
     }
 }
