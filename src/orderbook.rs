@@ -17,7 +17,7 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 pub extern crate alloc;
 
-use crate::{AccountId, AssetId, Balance, BalancesData};
+use crate::{AccountId, AssetId, Balance};
 use alloc::{vec, vec::Vec};
 use codec::{Decode, Encode, Error};
 use frame_support::sp_runtime::traits::Verify;
