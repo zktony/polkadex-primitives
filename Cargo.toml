@@ -13,13 +13,14 @@ frame-system = { default-features = false, git = "https://github.com/paritytech/
 sp-core = { default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "master" }
 sp-runtime = { default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "master" }
 sp-application-crypto = { default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "master" }
+frame-support = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git",  branch = "master" }
 
 [dev-dependencies]
 sp-serializer = { default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "master" }
 pretty_assertions = "0.6.1"
 
 [features]
-default = ["std"]
+default = ["std", "full_crypto"]
 std = [
     "codec/std",
     "serde",
@@ -28,4 +29,6 @@ std = [
     "sp-application-crypto/std",
     "sp-core/std",
     "sp-runtime/std",
+    "frame-support/std",
 ]
+full_crypto = ['sp-core/full_crypto']
