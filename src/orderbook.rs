@@ -91,7 +91,7 @@ pub struct OrderUpdate {
     pub balance: BalancesData, // contains the updated balance information of an account
 }
 
-/// Basic Order str
+/// Basic Order Struct
 #[derive(Debug, Clone, Encode, Decode, PartialEq)]
 pub struct Order {
     pub user_uid: UserId,
