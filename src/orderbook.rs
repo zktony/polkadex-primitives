@@ -75,6 +75,7 @@ pub enum OrderSide {
     ASK,
 }
 
+// FIXME: is this still necessary with OrderStatus implemented?
 #[derive(Debug, Clone, Encode, Decode, PartialEq, Copy)]
 pub enum OrderState {
     DONE,
@@ -83,11 +84,20 @@ pub enum OrderState {
     REJECT,
 }
 
+#[derive(Debug, Clone, Encode, Decode, PartialEq, Copy)]
+pub enum OrderStatus {
+    Open,
+    Cancelled,
+    Filled,
+    Partial,
+}
+
 /// Used for order upate events after an order has been successfully matches
 /// and all parties need to be notified
 #[derive(Debug, Clone, Encode, Decode, PartialEq)]
 pub struct OrderUpdate {
     pub order: Order,
+    pub status: OrderStatus,
     pub balance: BalancesData, // contains the updated balance information of an account
 }
 
