@@ -19,14 +19,24 @@
 
 #![cfg_attr(not(feature = "std"), no_std)]
 
-pub mod assets;
-pub mod orderbook;
-
+use sp_core::H256;
 use sp_runtime::{
     generic,
     traits::{BlakeTwo256, IdentifyAccount, Verify},
     MultiSignature, OpaqueExtrinsic,
 };
+
+pub mod account_data;
+pub mod assets;
+pub mod orderbook;
+
+// reexports:
+pub use account_data::*;
+pub use assets::*;
+pub use orderbook::*;
+
+/// Worker specific state hash
+pub type ShardIdentifier = H256;
 
 /// An index to a block.
 pub type BlockNumber = u32;

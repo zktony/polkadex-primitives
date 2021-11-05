@@ -17,7 +17,7 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 pub extern crate alloc;
 
-use crate::{assets::AssetId, AccountId, Balance};
+use crate::{AccountId, AssetId, Balance};
 use alloc::{vec, vec::Vec};
 use codec::{Decode, Encode, Error};
 use frame_support::sp_runtime::traits::Verify;
@@ -25,6 +25,9 @@ use sp_core::ed25519::Signature;
 
 #[cfg(feature = "full_crypto")]
 use sp_core::{ed25519, Pair};
+
+//FIXME do we still need that one?
+pub type RequestId = u128;
 
 /// User UID or nickname to identify the user (Wallet Address in our case)
 pub type UserId = AccountId;
