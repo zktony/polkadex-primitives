@@ -98,7 +98,6 @@ pub enum OrderStatus {
 pub struct OrderUpdate {
     pub order: Order,
     pub status: OrderStatus,
-    pub balance: BalancesData, // contains the updated balance information of an account
 }
 
 /// Basic Order Struct
