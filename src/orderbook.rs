@@ -17,7 +17,7 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 pub extern crate alloc;
 
-use crate::{AccountId, AssetId, Balance};
+use crate::{AccountId, AssetId, Balance, BalancesData};
 use alloc::{vec, vec::Vec};
 use codec::{Decode, Encode, Error};
 use frame_support::sp_runtime::traits::Verify;
@@ -83,7 +83,15 @@ pub enum OrderState {
     REJECT,
 }
 
-// Create Order
+/// Used for order upate events after an order has been successfully matches
+/// and all parties need to be notified
+#[derive(Debug, Clone, Encode, Decode, PartialEq)]
+pub struct OrderUpdate {
+    pub order: Order,
+    pub balance: BalancesData, // contains the updated balance information of an account
+}
+
+/// Basic Order str
 #[derive(Debug, Clone, Encode, Decode, PartialEq)]
 pub struct Order {
     pub user_uid: UserId,
