@@ -17,11 +17,9 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 //! Low-level types used throughout the Substrate code.
 
-
 #![cfg_attr(not(feature = "std"), no_std)]
 
 pub mod assets;
-pub mod common_types;
 
 use sp_runtime::{
     generic,
