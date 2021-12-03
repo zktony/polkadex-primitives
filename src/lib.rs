@@ -68,6 +68,36 @@ pub type Block = generic::Block<Header, OpaqueExtrinsic>;
 /// Block ID.
 pub type BlockId = generic::BlockId<Block>;
 
+#[derive(Encode, Decode, Clone, Debug, PartialEq)]
+pub struct LinkedAccount {
+    pub prev: AccountId,
+    pub current: AccountId,
+    pub next: Option<AccountId>,
+    pub proxies: Vec<AccountId>,
+}
+
+impl LinkedAccount {
+    pub fn from(prev: AccountId, current: AccountId) -> Self {
+        LinkedAccount {
+            prev,
+            next: None,
+            current,
+            proxies: vec![],
+        }
+    }
+}
+
+impl Default for LinkedAccount {
+    fn default() -> Self {
+        LinkedAccount {
+            prev: GENESIS_ACCOUNT.into_account(),
+            current: GENESIS_ACCOUNT.into_account(),
+            next: None,
+            proxies: vec![],
+        }
+    }
+}
+
 /// App-specific crypto used for reporting equivocation/misbehavior in BABE and
 /// GRANDPA. Any rewards for misbehavior reporting will be paid out to this
 /// account.
