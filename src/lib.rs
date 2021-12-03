@@ -69,7 +69,7 @@ pub type Block = generic::Block<Header, OpaqueExtrinsic>;
 /// Block ID.
 pub type BlockId = generic::BlockId<Block>;
 
-#[derive(Encode, Decode, Clone, Debug, PartialEq, Default)]
+#[derive(Encode, Decode, Clone, Debug, PartialEq, Default, scale_info::TypeInfo)]
 pub struct LinkedAccount {
     pub prev: AccountId,
     pub current: AccountId,
