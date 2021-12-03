@@ -19,6 +19,7 @@
 
 
 #![cfg_attr(not(feature = "std"), no_std)]
+use codec::{Encode, Decode};
 
 pub mod assets;
 pub mod common_types;
@@ -87,16 +88,6 @@ impl LinkedAccount {
     }
 }
 
-impl Default for LinkedAccount {
-    fn default() -> Self {
-        LinkedAccount {
-            prev: GENESIS_ACCOUNT.into_account(),
-            current: GENESIS_ACCOUNT.into_account(),
-            next: None,
-            proxies: vec![],
-        }
-    }
-}
 
 /// App-specific crypto used for reporting equivocation/misbehavior in BABE and
 /// GRANDPA. Any rewards for misbehavior reporting will be paid out to this
