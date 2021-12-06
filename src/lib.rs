@@ -20,7 +20,8 @@
 
 #![cfg_attr(not(feature = "std"), no_std)]
 use codec::{Encode, Decode};
-
+pub extern crate alloc;
+use alloc::vec::Vec;
 pub mod assets;
 pub mod common_types;
 
