@@ -32,3 +32,9 @@ pub enum AssetId {
     /// the values under 1000 are used for ISO 4217 Numeric Curency codes
     Asset(u64),
 }
+
+impl Default for AssetId {
+    fn default() -> Self {
+        AssetId::Asset(0)
+    }
+}
