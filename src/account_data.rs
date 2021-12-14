@@ -17,7 +17,7 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 //! Low-level types used throughout the Substrate code.
 pub extern crate alloc;
-use crate::{AccountId, AssetId, Balance, SignedOrder};
+use crate::{AccountId, AssetId, Balance};
 use alloc::vec::Vec;
 use codec::{Decode, Encode};
 use frame_support::{sp_runtime::traits::AccountIdConversion, PalletId};
@@ -75,10 +75,12 @@ pub struct NonceData {
     pub nonce: u32,
 }
 
+/*
 #[derive(Debug, Encode, Decode, PartialEq, Clone)]
 pub struct OrderbookData {
     pub signed_order: SignedOrder,
 }
+
 
 #[derive(Debug, Encode, Decode)]
 pub struct StorageData {
@@ -86,3 +88,4 @@ pub struct StorageData {
     pub nonce: Vec<NonceData>,
     pub orderbook: Vec<OrderbookData>,
 }
+ */

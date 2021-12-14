@@ -102,6 +102,7 @@ pub struct Order {
     pub price: Option<PriceAndQuantityType>,
 }
 
+/*
 // SignedOrder is used by enclave to store in Orderbook Mirror
 #[derive(Debug, Clone, Encode, Decode, PartialEq)]
 pub struct SignedOrder {
@@ -158,6 +159,8 @@ impl SignedOrder {
         SignedOrder::decode(&mut k)
     }
 }
+
+ */
 
 #[derive(Debug, Clone, Encode, Decode)]
 pub struct CreateOrderResponse {
