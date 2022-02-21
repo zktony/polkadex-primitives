@@ -17,7 +17,6 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 //! Low-level types used throughout the Substrate code.
 
-
 #![cfg_attr(not(feature = "std"), no_std)]
 
 pub mod assets;
@@ -79,7 +78,7 @@ pub mod report {
 
     /// Key type for the reporting module. Used for reporting BABE and GRANDPA
     /// equivocations.
-    pub const KEY_TYPE: KeyTypeId = key_types::REPORTING;
+    pub const KEY_TYPE: KeyTypeId = key_types::ACCOUNT; // REPORTING;
 
     mod app {
         use sp_application_crypto::{app_crypto, sr25519};

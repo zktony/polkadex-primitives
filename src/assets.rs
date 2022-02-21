@@ -19,10 +19,12 @@
 use codec::{Decode, Encode};
 #[cfg(feature = "std")]
 use serde::{Deserialize, Serialize};
-use sp_core::{RuntimeDebug, H160};
+use sp_core::RuntimeDebug;
 
 /// Enumerated asset on chain
-#[derive(Encode, Decode, Copy, Clone, PartialEq, Eq, Ord, PartialOrd, RuntimeDebug, scale_info::TypeInfo)]
+#[derive(
+    Encode, Decode, Copy, Clone, PartialEq, Eq, Ord, PartialOrd, RuntimeDebug, scale_info::TypeInfo,
+)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 pub enum AssetId {
     /// PDEX the native currency of the chain
