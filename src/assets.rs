@@ -30,5 +30,5 @@ pub enum AssetId {
     /// Generic enumerated assed
     /// Range 0 - 0x00000000FFFFFFFF (2^32)-1 is reserved for protected tokens
     /// the values under 1000 are used for ISO 4217 Numeric Curency codes
-    Asset(u128),
+    asset(u128),
 }
