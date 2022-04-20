@@ -22,16 +22,16 @@ impl<Account,ProxyLimit: Get<u32>> AccountInfo<Account,ProxyLimit> {
 
 #[derive(Encode,Decode, MaxEncodedLen,TypeInfo)]
 pub struct TradingPairInfo<Balance>{
-    base_asset: AssetId,
-    quote_asset: AssetId,
+    pub base_asset: AssetId,
+    pub quote_asset: AssetId,
     // Minimum size of trade
-    minimum_trade_amount: Balance,
-    minimum_withdrawal_amount: Balance,
-    minimum_deposit_amount: Balance,
-    maximum_withdrawal_amount: Balance,
-    maximum_deposit_amount: Balance,
-    base_withdrawal_fee: Balance,
-    quote_withdrawal_fee: Balance,
+    pub minimum_trade_amount: Balance,
+    pub minimum_withdrawal_amount: Balance,
+    pub minimum_deposit_amount: Balance,
+    pub maximum_withdrawal_amount: Balance,
+    pub maximum_deposit_amount: Balance,
+    pub base_withdrawal_fee: Balance,
+    pub quote_withdrawal_fee: Balance,
 }
 
 impl<Balance> TradingPairInfo<Balance> {
