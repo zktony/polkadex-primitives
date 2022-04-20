@@ -26,6 +26,7 @@ pub struct TradingPairInfo<Balance>{
     pub quote_asset: AssetId,
     // Minimum size of trade
     pub minimum_trade_amount: Balance,
+    pub maximum_trade_amount: Balance,
     pub minimum_withdrawal_amount: Balance,
     pub minimum_deposit_amount: Balance,
     pub maximum_withdrawal_amount: Balance,
@@ -38,6 +39,7 @@ impl<Balance> TradingPairInfo<Balance> {
     pub fn new(base_asset: AssetId,
                quote_asset: AssetId,
                minimum_trade_amount: Balance,
+               maximum_trade_amount: Balance,
                minimum_withdrawal_amount: Balance,
                minimum_deposit_amount: Balance,
                maximum_withdrawal_amount: Balance,
@@ -49,6 +51,7 @@ impl<Balance> TradingPairInfo<Balance> {
             base_asset,
             quote_asset,
             minimum_trade_amount,
+            maximum_trade_amount,
             minimum_withdrawal_amount,
             minimum_deposit_amount,
             maximum_withdrawal_amount,
