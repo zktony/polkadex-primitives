@@ -22,6 +22,7 @@
 
 pub mod assets;
 pub mod common_types;
+mod ocex;
 
 use sp_runtime::{
     generic,
