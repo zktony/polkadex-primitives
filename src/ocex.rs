@@ -8,7 +8,7 @@ use crate::assets::AssetId;
 use serde::{Deserialize, Serialize};
 
 
-#[derive(Clone,Encode,Decode, MaxEncodedLen,TypeInfo)]
+#[derive(Clone,Encode,Decode, MaxEncodedLen,TypeInfo, Debug)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 pub enum IngressMessages<AccountId,Balance> {
     // Start Enclave
@@ -37,7 +37,7 @@ impl<Account,ProxyLimit: Get<u32>> AccountInfo<Account,ProxyLimit> {
     }
 }
 
-#[derive(Clone, Encode,Decode, MaxEncodedLen,TypeInfo)]
+#[derive(Clone, Encode,Decode, MaxEncodedLen,TypeInfo, Debug)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 pub struct TradingPairInfo<AccountId,Balance>{
     pub base_asset: AssetId,
