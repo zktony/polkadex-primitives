@@ -1,4 +1,3 @@
-use std::mem;
 use frame_support::BoundedVec;
 use frame_support::traits::Get;
 use codec::{Encode,Decode,MaxEncodedLen};
@@ -11,13 +10,13 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Clone,Encode,Decode, MaxEncodedLen,TypeInfo)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
-pub enum IngressMessages<AccountId> {
+pub enum IngressMessages<AccountId,Balance> {
     // Start Enclave
-    StartEnclave(TradingPairInfo<AccountId>),
+    StartEnclave(TradingPairInfo<AccountId,Balance>),
     // Register User ( main, proxy)
     RegisterUser(AccountId,AccountId),
     // Main Acc, Assetid, Amount
-    Deposit(AccountId,AssetId,[u8;mem::size_of::<u128>()]),
+    Deposit(AccountId,AssetId,Balance),
     // Main Acc, Proxy Account
     AddProxy(AccountId,AccountId),
 }
@@ -40,45 +39,45 @@ impl<Account,ProxyLimit: Get<u32>> AccountInfo<Account,ProxyLimit> {
 
 #[derive(Clone, Encode,Decode, MaxEncodedLen,TypeInfo)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
-pub struct TradingPairInfo<AccountId>{
+pub struct TradingPairInfo<AccountId,Balance>{
     pub base_asset: AssetId,
     pub quote_asset: AssetId,
     // Minimum size of trade
-    pub minimum_trade_amount: [u8;mem::size_of::<u128>()],
-    pub maximum_trade_amount: [u8;mem::size_of::<u128>()],
-    pub minimum_withdrawal_amount: [u8;mem::size_of::<u128>()],
-    pub minimum_deposit_amount: [u8;mem::size_of::<u128>()],
-    pub maximum_withdrawal_amount: [u8;mem::size_of::<u128>()],
-    pub maximum_deposit_amount: [u8;mem::size_of::<u128>()],
-    pub base_withdrawal_fee: [u8;mem::size_of::<u128>()],
-    pub quote_withdrawal_fee: [u8;mem::size_of::<u128>()],
-    pub enclave_id: AccountId,
+    pub minimum_trade_amount: Balance,
+    pub maximum_trade_amount: Balance,
+    pub minimum_withdrawal_amount: Balance,
+    pub minimum_deposit_amount: Balance,
+    pub maximum_withdrawal_amount: Balance,
+    pub maximum_deposit_amount: Balance,
+    pub base_withdrawal_fee: Balance,
+    pub quote_withdrawal_fee: Balance,
+    pub enclave_id: AccountId
 }
 
-impl<AccountId> TradingPairInfo<AccountId> {
+impl<AccountId, Balance> TradingPairInfo<AccountId,Balance> {
     pub fn new(base_asset: AssetId,
                quote_asset: AssetId,
-               minimum_trade_amount: u128,
-               maximum_trade_amount: u128,
-               minimum_withdrawal_amount: u128,
-               minimum_deposit_amount: u128,
-               maximum_withdrawal_amount: u128,
-               maximum_deposit_amount: u128,
-               base_withdrawal_fee: u128,
-               quote_withdrawal_fee: u128,
+               minimum_trade_amount: Balance,
+               maximum_trade_amount: Balance,
+               minimum_withdrawal_amount: Balance,
+               minimum_deposit_amount: Balance,
+               maximum_withdrawal_amount: Balance,
+               maximum_deposit_amount: Balance,
+               base_withdrawal_fee: Balance,
+               quote_withdrawal_fee: Balance,
                enclave_id: AccountId
-    ) -> TradingPairInfo<AccountId>{
+    ) -> TradingPairInfo<AccountId,Balance>{
         TradingPairInfo{
             base_asset,
             quote_asset,
-            minimum_trade_amount: minimum_trade_amount.to_be_bytes(),
-            maximum_trade_amount: maximum_trade_amount.to_be_bytes(),
-            minimum_withdrawal_amount: minimum_withdrawal_amount.to_be_bytes(),
-            minimum_deposit_amount: minimum_deposit_amount.to_be_bytes(),
-            maximum_withdrawal_amount:maximum_withdrawal_amount.to_be_bytes(),
-            maximum_deposit_amount: maximum_deposit_amount.to_be_bytes(),
-            base_withdrawal_fee:base_withdrawal_fee.to_be_bytes(),
-            quote_withdrawal_fee: quote_withdrawal_fee.to_be_bytes(),
+            minimum_trade_amount,
+            maximum_trade_amount,
+            minimum_withdrawal_amount,
+            minimum_deposit_amount,
+            maximum_withdrawal_amount,
+            maximum_deposit_amount,
+            base_withdrawal_fee,
+            quote_withdrawal_fee,
             enclave_id
         }
     }
