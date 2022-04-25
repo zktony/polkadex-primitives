@@ -2,7 +2,7 @@ use frame_support::BoundedVec;
 use frame_support::traits::Get;
 use codec::{Encode,Decode,MaxEncodedLen};
 use scale_info::TypeInfo;
-use crate::AssetId;
+use crate::assets::AssetId;
 
 #[cfg(feature = "std")]
 use serde::{Deserialize, Serialize};
