@@ -2,7 +2,24 @@ use frame_support::BoundedVec;
 use frame_support::traits::Get;
 use codec::{Encode,Decode,MaxEncodedLen};
 use scale_info::TypeInfo;
-use crate::assets::AssetId;
+use crate::AssetId;
+
+#[cfg(feature = "std")]
+use serde::{Deserialize, Serialize};
+
+
+#[derive(Clone,Encode,Decode, MaxEncodedLen,TypeInfo)]
+#[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
+pub enum IngressMessages<AccountId,Balance> {
+    // Start Enclave
+    StartEnclave(TradingPairInfo<AccountId,Balance>),
+    // Register User ( main, proxy)
+    RegisterUser(AccountId,AccountId),
+    // Main Acc, Assetid, Amount
+    Deposit(AccountId,AssetId,Balance),
+    // Main Acc, Proxy Account
+    AddProxy(AccountId,AccountId),
+}
 
 #[derive(Encode,Decode, MaxEncodedLen,TypeInfo)]
 #[scale_info(skip_type_params(ProxyLimit))]
@@ -20,41 +37,48 @@ impl<Account,ProxyLimit: Get<u32>> AccountInfo<Account,ProxyLimit> {
     }
 }
 
-#[derive(Encode,Decode, MaxEncodedLen,TypeInfo)]
-pub struct TradingPairInfo<Balance>{
-    base_asset: AssetId,
-    quote_asset: AssetId,
+#[derive(Clone, Encode,Decode, MaxEncodedLen,TypeInfo)]
+#[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
+pub struct TradingPairInfo<AccountId,Balance>{
+    pub base_asset: AssetId,
+    pub quote_asset: AssetId,
     // Minimum size of trade
-    minimum_trade_amount: Balance,
-    minimum_withdrawal_amount: Balance,
-    minimum_deposit_amount: Balance,
-    maximum_withdrawal_amount: Balance,
-    maximum_deposit_amount: Balance,
-    base_withdrawal_fee: Balance,
-    quote_withdrawal_fee: Balance,
+    pub minimum_trade_amount: Balance,
+    pub maximum_trade_amount: Balance,
+    pub minimum_withdrawal_amount: Balance,
+    pub minimum_deposit_amount: Balance,
+    pub maximum_withdrawal_amount: Balance,
+    pub maximum_deposit_amount: Balance,
+    pub base_withdrawal_fee: Balance,
+    pub quote_withdrawal_fee: Balance,
+    pub enclave_id: AccountId
 }
 
-impl<Balance> TradingPairInfo<Balance> {
+impl<AccountId, Balance> TradingPairInfo<AccountId,Balance> {
     pub fn new(base_asset: AssetId,
                quote_asset: AssetId,
                minimum_trade_amount: Balance,
+               maximum_trade_amount: Balance,
                minimum_withdrawal_amount: Balance,
                minimum_deposit_amount: Balance,
                maximum_withdrawal_amount: Balance,
                maximum_deposit_amount: Balance,
                base_withdrawal_fee: Balance,
                quote_withdrawal_fee: Balance,
-    ) -> TradingPairInfo<Balance>{
+               enclave_id: AccountId
+    ) -> TradingPairInfo<AccountId,Balance>{
         TradingPairInfo{
             base_asset,
             quote_asset,
             minimum_trade_amount,
+            maximum_trade_amount,
             minimum_withdrawal_amount,
             minimum_deposit_amount,
             maximum_withdrawal_amount,
             maximum_deposit_amount,
             base_withdrawal_fee,
             quote_withdrawal_fee,
+            enclave_id
         }
     }
 }
