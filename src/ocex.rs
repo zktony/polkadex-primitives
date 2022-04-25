@@ -1,4 +1,4 @@
-use core::mem;
+use std::mem;
 use frame_support::BoundedVec;
 use frame_support::traits::Get;
 use codec::{Encode,Decode,MaxEncodedLen};
