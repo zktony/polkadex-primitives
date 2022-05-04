@@ -44,9 +44,9 @@ pub struct BalanceSnapshot {
 #[derive(Clone,Encode,Decode, MaxEncodedLen,TypeInfo, Debug, PartialEq)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 pub struct Withdrawal<AccountId,Balance> {
-    main_account: AccountId,
-    amount: Balance,
-    asset: AssetId
+    pub main_account: AccountId,
+    pub amount: Balance,
+    pub asset: AssetId
 }
 
 #[derive(Encode,Decode, MaxEncodedLen,TypeInfo)]
