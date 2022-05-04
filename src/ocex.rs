@@ -21,6 +21,34 @@ pub enum IngressMessages<AccountId,Balance> {
     AddProxy(AccountId,AccountId),
 }
 
+#[derive(Clone,Encode,Decode, MaxEncodedLen,TypeInfo, Debug, PartialEq)]
+#[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
+pub enum EgressMessages<AccountId,Balance> {
+    Withdrawal(Withdrawal<AccountId,Balance>),
+    BalanceSnapShot(BalanceSnapshot),
+    LMPData(LMPDataPoints)
+}
+
+#[derive(Clone,Encode,Decode, MaxEncodedLen,TypeInfo, Debug, PartialEq)]
+#[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
+pub struct LMPDataPoints {
+
+}
+
+#[derive(Clone,Encode,Decode, MaxEncodedLen,TypeInfo, Debug, PartialEq)]
+#[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
+pub struct BalanceSnapshot {
+
+}
+
+#[derive(Clone,Encode,Decode, MaxEncodedLen,TypeInfo, Debug, PartialEq)]
+#[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
+pub struct Withdrawal<AccountId,Balance> {
+    main_account: AccountId,
+    amount: Balance,
+    asset: AssetId
+}
+
 #[derive(Encode,Decode, MaxEncodedLen,TypeInfo)]
 #[scale_info(skip_type_params(ProxyLimit))]
 pub struct AccountInfo<Account,ProxyLimit: Get<u32>> {
