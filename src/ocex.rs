@@ -79,7 +79,9 @@ pub struct TradingPairInfo<AccountId,Balance>{
     pub maximum_deposit_amount: Balance,
     pub base_withdrawal_fee: Balance,
     pub quote_withdrawal_fee: Balance,
-    pub enclave_id: AccountId
+    pub enclave_id: AccountId,
+    pub min_depth: Balance,
+    pub max_spread: Balance, 
 }
 
 impl<AccountId, Balance> TradingPairInfo<AccountId,Balance> {
@@ -93,7 +95,9 @@ impl<AccountId, Balance> TradingPairInfo<AccountId,Balance> {
                maximum_deposit_amount: Balance,
                base_withdrawal_fee: Balance,
                quote_withdrawal_fee: Balance,
-               enclave_id: AccountId
+               enclave_id: AccountId,    
+               min_depth: Balance,
+               max_spread: Balance
     ) -> TradingPairInfo<AccountId,Balance>{
         TradingPairInfo{
             base_asset,
@@ -106,7 +110,9 @@ impl<AccountId, Balance> TradingPairInfo<AccountId,Balance> {
             maximum_deposit_amount,
             base_withdrawal_fee,
             quote_withdrawal_fee,
-            enclave_id
+            enclave_id, 
+            min_depth,
+            max_spread
         }
     }
 }
