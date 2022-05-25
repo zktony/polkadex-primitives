@@ -1,3 +1,4 @@
+use std::ops::Index;
 use frame_support::BoundedVec;
 use frame_support::traits::Get;
 use codec::{Encode,Decode,MaxEncodedLen};
@@ -62,6 +63,18 @@ impl<Account,ProxyLimit: Get<u32>> AccountInfo<Account,ProxyLimit> {
             // It's okay to not handle this error since ProxyLimit is should be greater than one.
         }
         AccountInfo{ proxies }
+    }
+
+    // Adds a new proxy account
+    pub fn add_proxy(&mut self, proxy: &Account) -> Result<(),()> {
+        self.proxies.try_push(proxy)
+    }
+
+    // Removes a proxy account
+    pub fn remove_proxy(&mut self, proxy: &Account){
+        self.proxies.retain(| item | {
+            item != proxy
+        });
     }
 }
 
