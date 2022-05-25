@@ -20,6 +20,8 @@ pub enum IngressMessages<AccountId,Balance> {
     Deposit(AccountId,AssetId,Balance),
     // Main Acc, Proxy Account
     AddProxy(AccountId,AccountId),
+    // Main Acc, Proxy Account
+    RemoveProxy(AccountId,AccountId),
 }
 
 #[derive(Clone,Encode,Decode, MaxEncodedLen,TypeInfo, Debug, PartialEq)]
