@@ -63,6 +63,18 @@ impl<Account,ProxyLimit: Get<u32>> AccountInfo<Account,ProxyLimit> {
         }
         AccountInfo{ proxies }
     }
+
+    // Adds a new proxy account
+    pub fn add_proxy(&mut self, proxy: &Account) -> Result<(),()> {
+        self.proxies.try_push(proxy)
+    }
+
+    // Removes a proxy account
+    pub fn remove_proxy(&mut self, proxy: &Account){
+        self.proxies.retain(| item | {
+            item != proxy
+        });
+    }
 }
 
 #[derive(Clone, Encode,Decode, MaxEncodedLen,TypeInfo, Debug, PartialEq)]
