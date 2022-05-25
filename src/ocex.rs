@@ -1,4 +1,3 @@
-use std::ops::Index;
 use frame_support::BoundedVec;
 use frame_support::traits::Get;
 use codec::{Encode,Decode,MaxEncodedLen};
@@ -58,7 +57,7 @@ pub struct AccountInfo<Account,ProxyLimit: Get<u32>> {
     proxies: BoundedVec<Account,ProxyLimit>
 }
 
-impl<Account,ProxyLimit: Get<u32>> AccountInfo<Account,ProxyLimit> {
+impl<Account: PartialEq,ProxyLimit: Get<u32>> AccountInfo<Account,ProxyLimit> {
     pub fn new(proxy: Account) -> AccountInfo<Account,ProxyLimit>{
         let mut proxies = BoundedVec::default();
         if let Err(()) = proxies.try_push(proxy){
@@ -68,7 +67,7 @@ impl<Account,ProxyLimit: Get<u32>> AccountInfo<Account,ProxyLimit> {
     }
 
     // Adds a new proxy account
-    pub fn add_proxy(&mut self, proxy: &Account) -> Result<(),()> {
+    pub fn add_proxy(&mut self, proxy: Account) -> Result<(),()> {
         self.proxies.try_push(proxy)
     }
 
