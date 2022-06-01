@@ -1,7 +1,12 @@
+use std::collections::HashMap;
+use std::collections::HashSet;
+
 use crate::AssetId;
 use codec::{Decode, Encode, MaxEncodedLen};
 use frame_support::traits::Get;
 use frame_support::BoundedVec;
+use frame_support::StorageMap;
+use std::collections::BTreeSet;
 use scale_info::TypeInfo;
 
 #[cfg(feature = "std")]
@@ -27,12 +32,17 @@ pub enum IngressMessages<AccountId, Balance> {
 pub enum EgressMessages<AccountId, Balance> {
     Withdrawal(Withdrawal<AccountId, Balance>),
     BalanceSnapShot(BalanceSnapshot),
-    LMPData(LMPDataPoints),
+    LMPData(LMPDataPoints<AccountId, Balance>),
 }
 
 #[derive(Clone, Encode, Decode, MaxEncodedLen, TypeInfo, Debug, PartialEq)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
-pub struct LMPDataPoints {}
+pub struct LMPDataPoints<AccountId, Balance> {
+    pub market_maker_edited_accounts: HashMap<AccountId,Balance>,
+    pub trading_bot_edited_accounts: HashSet<AccountId>,
+}
+
+
 
 #[derive(Clone, Encode, Decode, MaxEncodedLen, TypeInfo, Debug, PartialEq)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
