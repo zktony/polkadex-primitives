@@ -27,19 +27,18 @@ pub enum IngressMessages<AccountId, Balance> {
     RemoveProxy(AccountId, AccountId),
 }
 
-#[derive(Clone, Encode, Decode, MaxEncodedLen, TypeInfo, Debug, PartialEq)]
+#[derive(Clone, Encode, Decode,     MaxEncodedLen, TypeInfo, Debug, PartialEq)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
-pub enum EgressMessages<AccountId, Balance> {
+pub enum EgressMessages<AccountId, Balance, String> {
     Withdrawal(Withdrawal<AccountId, Balance>),
     BalanceSnapShot(BalanceSnapshot),
-    LMPData(LMPDataPoints<AccountId, Balance>),
+    LMPData(LMPDataPoints<String>),
 }
 
 #[derive(Clone, Encode, Decode, MaxEncodedLen, TypeInfo, Debug, PartialEq)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
-pub struct LMPDataPoints<AccountId, Balance> {
-    pub market_maker_edited_accounts: HashMap<AccountId,Balance>,
-    pub trading_bot_edited_accounts: HashSet<AccountId>,
+pub struct LMPDataPoints<String>{
+    data : String
 }
 
 
