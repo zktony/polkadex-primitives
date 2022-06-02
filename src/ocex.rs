@@ -20,6 +20,17 @@ pub enum IngressMessages<AccountId, Balance> {
     AddProxy(AccountId, AccountId),
     // Main Acc, Proxy Account
     RemoveProxy(AccountId, AccountId),
+    // Enclave registration confirmation
+    EnclaveRegistered(AccountId),
+}
+
+/// Provides size of the unpadded report
+pub struct UnpaddedReportSize;
+
+impl Get<u32> for UnpaddedReportSize {
+    fn get() -> u32 {
+        432
+    }
 }
 
 #[derive(Clone, Encode, Decode, MaxEncodedLen, TypeInfo, Debug, PartialEq)]
@@ -28,6 +39,7 @@ pub enum EgressMessages<AccountId, Balance> {
     Withdrawal(Withdrawal<AccountId, Balance>),
     BalanceSnapShot(BalanceSnapshot),
     LMPData(LMPDataPoints),
+    RegisterEnclave(BoundedVec<u8, UnpaddedReportSize>),
 }
 
 #[derive(Clone, Encode, Decode, MaxEncodedLen, TypeInfo, Debug, PartialEq)]
