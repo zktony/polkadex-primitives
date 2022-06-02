@@ -33,7 +33,7 @@ pub enum EgressMessages<AccountId, Balance, String> {
 #[derive(Clone, Encode, Decode, MaxEncodedLen, TypeInfo, Debug, PartialEq)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 pub struct LMPDataPoints<String>{
-    data : String
+    pub data : String
 }
 
 
