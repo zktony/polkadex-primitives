@@ -19,6 +19,7 @@
 
 #![cfg_attr(not(feature = "std"), no_std)]
 
+pub use frame_support::storage::bounded_vec::BoundedVec;
 use sp_core::H256;
 use sp_runtime::{
     generic,
@@ -30,7 +31,6 @@ pub mod ocex;
 
 // reexports:
 pub use assets::*;
-
 
 /// Worker specific state hash
 pub type ShardIdentifier = H256;
