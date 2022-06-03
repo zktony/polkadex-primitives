@@ -17,19 +17,19 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 use codec::{Decode, Encode, MaxEncodedLen};
-use scale_info::TypeInfo;
 #[cfg(feature = "std")]
 use serde::{Deserialize, Serialize};
-use sp_core::{RuntimeDebug};
+use sp_core::RuntimeDebug;
+use scale_info::TypeInfo;
 
 /// Enumerated asset on chain
-#[derive(Encode, Decode, TypeInfo, MaxEncodedLen, Copy, Clone, PartialEq, Eq, Ord, PartialOrd, RuntimeDebug)]
+#[derive(Encode, Decode, Copy, Clone, PartialEq, Eq, Ord, PartialOrd, RuntimeDebug, TypeInfo, MaxEncodedLen)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 pub enum AssetId {
     /// PDEX the native currency of the chain
-    POLKADEX,
+    polkadex,
     /// Generic enumerated assed
     /// Range 0 - 0x00000000FFFFFFFF (2^32)-1 is reserved for protected tokens
     /// the values under 1000 are used for ISO 4217 Numeric Curency codes
-    Asset(u128),
+    asset(u128),
 }
