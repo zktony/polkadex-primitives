@@ -17,7 +17,6 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 //! Low-level types used throughout the Substrate code.
 
-
 #![cfg_attr(not(feature = "std"), no_std)]
 
 pub mod assets;
@@ -68,4 +67,3 @@ pub type Header = generic::Header<BlockNumber, BlakeTwo256>;
 pub type Block = generic::Block<Header, OpaqueExtrinsic>;
 /// Block ID.
 pub type BlockId = generic::BlockId<Block>;
-
