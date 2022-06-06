@@ -25,7 +25,7 @@ pub enum IngressMessages<AccountId, Balance> {
     // Enclave registration confirmation
     EnclaveRegistered(AccountId),
     // Enclave Shutdown request
-    ShutdownEnclave(AccountId)
+    ShutdownEnclave(AccountId),
 }
 
 /// Provides size of the unpadded report
@@ -39,27 +39,41 @@ impl Get<u32> for UnpaddedReportSize {
 
 #[derive(Clone, Encode, Decode, MaxEncodedLen, TypeInfo)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
-#[scale_info(skip_type_params(ProxyLimit,SnapshotAccLimit,WithdrawalLimit))]
-pub enum EgressMessages<AccountId,  Balance: Zero, ProxyLimit: Get<u32>, SnapshotAccLimit: Get<u32>,WithdrawalLimit: Get<u32>> {
+#[scale_info(skip_type_params(ProxyLimit, SnapshotAccLimit, WithdrawalLimit))]
+pub enum EgressMessages<
+    AccountId,
+    Balance: Zero,
+    ProxyLimit: Get<u32>,
+    SnapshotAccLimit: Get<u32>,
+    WithdrawalLimit: Get<u32>,
+> {
     Withdrawal(Withdrawal<AccountId, Balance>),
-    BalanceSnapShot(BalanceSnapshot<AccountId, Balance, ProxyLimit, SnapshotAccLimit,WithdrawalLimit>),
+    EnclaveSnapshot(
+        EnclaveSnapshot<AccountId, Balance, ProxyLimit, SnapshotAccLimit, WithdrawalLimit>,
+    ),
     RegisterEnclave(BoundedVec<u8, UnpaddedReportSize>),
 }
 
 #[derive(Clone, Encode, Decode, MaxEncodedLen, TypeInfo)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
-#[scale_info(skip_type_params(ProxyLimit,SnapshotAccLimit,WithdrawalLimit))]
-pub struct BalanceSnapshot<Account, Balance: Zero, ProxyLimit: Get<u32>, SnapshotAccLimit: Get<u32>,WithdrawalLimit: Get<u32>> {
+#[scale_info(skip_type_params(ProxyLimit, SnapshotAccLimit, WithdrawalLimit))]
+pub struct EnclaveSnapshot<
+    Account,
+    Balance: Zero,
+    ProxyLimit: Get<u32>,
+    SnapshotAccLimit: Get<u32>,
+    WithdrawalLimit: Get<u32>,
+> {
     /// Serial number of snapshot.
     pub snapshot_number: u32,
     /// List of accounts directly saved on chain, number of accounts bounded by SnapshotAccLimit
-    pub accounts: BoundedVec<AccountInfo<Account,Balance, ProxyLimit>,SnapshotAccLimit>,
+    pub accounts: BoundedVec<AccountInfo<Account, Balance, ProxyLimit>, SnapshotAccLimit>,
     /// Hash of the balance snapshot dump made by enclave. ( dump contains all the accounts in enclave )
     pub snapshot_whole_hash: H256,
     /// Sum of all q_finals of all lmp traders
     pub total_lmp_score: Balance,
     /// Withdrawals
-    pub withdrawals: BoundedVec<Withdrawal<Account,Balance>, WithdrawalLimit>
+    pub withdrawals: BoundedVec<Withdrawal<Account, Balance>, WithdrawalLimit>,
 }
 
 #[derive(Clone, Encode, Decode, MaxEncodedLen, TypeInfo, Debug, PartialEq)]
@@ -87,16 +101,19 @@ pub struct AccountInfo<Account, Balance: Zero, ProxyLimit: Get<u32>> {
     /// Total Fees paid by this trader
     pub fee_paid_base_asset: Balance,
     pub fee_paid_quote_asset: Balance,
-    pub q_final: Balance
+    pub q_final: Balance,
 }
 
-impl<Account: PartialEq, Balance: Zero, ProxyLimit: Get<u32>> AccountInfo<Account, Balance, ProxyLimit> {
-    pub fn new(proxy: Account) -> AccountInfo<Account,Balance, ProxyLimit> {
+impl<Account: PartialEq, Balance: Zero, ProxyLimit: Get<u32>>
+    AccountInfo<Account, Balance, ProxyLimit>
+{
+    pub fn new(proxy: Account) -> AccountInfo<Account, Balance, ProxyLimit> {
         let mut proxies = BoundedVec::default();
         if let Err(()) = proxies.try_push(proxy) {
             // It's okay to not handle this error since ProxyLimit is should be greater than one.
         }
-        AccountInfo { proxies,
+        AccountInfo {
+            proxies,
             nonce: 0,
             quote_reserved: Balance::zero(),
             quote_free: Balance::zero(),
@@ -104,7 +121,7 @@ impl<Account: PartialEq, Balance: Zero, ProxyLimit: Get<u32>> AccountInfo<Accoun
             base_free: Balance::zero(),
             fee_paid_base_asset: Balance::zero(),
             fee_paid_quote_asset: Balance::zero(),
-            q_final: Balance::zero()
+            q_final: Balance::zero(),
         }
     }
 
