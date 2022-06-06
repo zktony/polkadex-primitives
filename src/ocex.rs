@@ -30,7 +30,6 @@ pub enum IngressMessages<AccountId, Balance> {
 
 /// Provides size of the unpadded report
 pub struct UnpaddedReportSize;
-
 impl Get<u32> for UnpaddedReportSize {
     fn get() -> u32 {
         432
@@ -42,8 +41,7 @@ impl Get<u32> for UnpaddedReportSize {
 #[scale_info(skip_type_params(
     ProxyLimit,
     SnapshotAccLimit,
-    WithdrawalLimit,
-    UnpaddedReportSizeLimit
+    WithdrawalLimit
 ))]
 pub enum EgressMessages<
     AccountId,

@@ -23,6 +23,7 @@ pub mod assets;
 pub mod common_types;
 pub mod ocex;
 
+use frame_support::traits::Get;
 use sp_runtime::{
     generic,
     traits::{BlakeTwo256, IdentifyAccount, Verify},
@@ -67,3 +68,23 @@ pub type Header = generic::Header<BlockNumber, BlakeTwo256>;
 pub type Block = generic::Block<Header, OpaqueExtrinsic>;
 /// Block ID.
 pub type BlockId = generic::BlockId<Block>;
+
+// TODO: Figure out the actual bound given below
+pub struct ProxyLimit;
+impl Get<u32> for ProxyLimit{
+    fn get() -> u32 {
+        3
+    }
+}
+pub struct WithdrawalLimit;
+impl Get<u32> for WithdrawalLimit{
+    fn get() -> u32 {
+        500
+    }
+}
+pub struct SnapshotAccLimit;
+impl Get<u32> for SnapshotAccLimit{
+    fn get() -> u32 {
+        1000
+    }
+}
