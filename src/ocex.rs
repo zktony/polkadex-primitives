@@ -22,6 +22,8 @@ pub enum IngressMessages<AccountId, Balance> {
     RemoveProxy(AccountId, AccountId),
     // Enclave registration confirmation
     EnclaveRegistered(AccountId),
+    // Enclave Shutdown request
+    ShutdownEnclave(AccountId)
 }
 
 /// Provides size of the unpadded report
