@@ -38,24 +38,30 @@ impl Get<u32> for UnpaddedReportSize {
 }
 
 #[derive(Clone, Encode, Decode, MaxEncodedLen, TypeInfo)]
-#[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
-#[scale_info(skip_type_params(ProxyLimit, SnapshotAccLimit, WithdrawalLimit))]
+// #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
+#[scale_info(skip_type_params(
+    ProxyLimit,
+    SnapshotAccLimit,
+    WithdrawalLimit,
+    UnpaddedReportSizeLimit
+))]
 pub enum EgressMessages<
     AccountId,
     Balance: Zero,
     ProxyLimit: Get<u32>,
     SnapshotAccLimit: Get<u32>,
     WithdrawalLimit: Get<u32>,
+    UnpaddedReportSizeLimit: Get<u32>,
 > {
     Withdrawal(Withdrawal<AccountId, Balance>),
     EnclaveSnapshot(
         EnclaveSnapshot<AccountId, Balance, ProxyLimit, SnapshotAccLimit, WithdrawalLimit>,
     ),
-    RegisterEnclave(BoundedVec<u8, UnpaddedReportSize>),
+    RegisterEnclave(BoundedVec<u8, UnpaddedReportSizeLimit>),
 }
 
 #[derive(Clone, Encode, Decode, MaxEncodedLen, TypeInfo)]
-#[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
+// #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 #[scale_info(skip_type_params(ProxyLimit, SnapshotAccLimit, WithdrawalLimit))]
 pub struct EnclaveSnapshot<
     Account,
@@ -85,7 +91,7 @@ pub struct Withdrawal<AccountId, Balance> {
 }
 
 #[derive(Clone, Encode, Decode, MaxEncodedLen, TypeInfo)]
-#[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
+// #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 #[scale_info(skip_type_params(ProxyLimit))]
 pub struct AccountInfo<Account, Balance: Zero, ProxyLimit: Get<u32>> {
     pub proxies: BoundedVec<Account, ProxyLimit>,
