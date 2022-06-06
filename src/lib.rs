@@ -70,20 +70,24 @@ pub type Block = generic::Block<Header, OpaqueExtrinsic>;
 pub type BlockId = generic::BlockId<Block>;
 
 // TODO: Figure out the actual bound given below
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub struct ProxyLimit;
-impl Get<u32> for ProxyLimit{
+impl Get<u32> for ProxyLimit {
     fn get() -> u32 {
         3
     }
 }
+
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub struct WithdrawalLimit;
-impl Get<u32> for WithdrawalLimit{
+impl Get<u32> for WithdrawalLimit {
     fn get() -> u32 {
         500
     }
 }
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub struct SnapshotAccLimit;
-impl Get<u32> for SnapshotAccLimit{
+impl Get<u32> for SnapshotAccLimit {
     fn get() -> u32 {
         1000
     }

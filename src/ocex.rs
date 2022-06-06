@@ -4,6 +4,7 @@ use frame_support::traits::Get;
 use frame_support::BoundedVec;
 use scale_info::TypeInfo;
 
+use crate::SnapshotAccLimit;
 #[cfg(feature = "std")]
 use serde::{Deserialize, Serialize};
 use sp_core::H256;
@@ -38,11 +39,7 @@ impl Get<u32> for UnpaddedReportSize {
 
 #[derive(Clone, Encode, Decode, MaxEncodedLen, TypeInfo)]
 // #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
-#[scale_info(skip_type_params(
-    ProxyLimit,
-    SnapshotAccLimit,
-    WithdrawalLimit
-))]
+#[scale_info(skip_type_params(ProxyLimit, SnapshotAccLimit, WithdrawalLimit))]
 pub enum EgressMessages<
     AccountId,
     Balance: Zero,
@@ -77,6 +74,20 @@ pub struct EnclaveSnapshot<
     pub total_lmp_score: Balance,
     /// Withdrawals
     pub withdrawals: BoundedVec<Withdrawal<Account, Balance>, WithdrawalLimit>,
+}
+
+impl<
+        Account,
+        Balance: Zero,
+        ProxyLimit: Get<u32>,
+        SnapshotAccLimit: Get<u32>,
+        WithdrawalLimit: Get<u32>,
+    > PartialEq
+    for EnclaveSnapshot<Account, Balance, ProxyLimit, SnapshotAccLimit, WithdrawalLimit>
+{
+    fn eq(&self, other: &Self) -> bool {
+        self.snapshot_number == other.snapshot_number
+    }
 }
 
 #[derive(Clone, Encode, Decode, MaxEncodedLen, TypeInfo, Debug, PartialEq)]
