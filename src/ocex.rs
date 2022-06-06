@@ -51,13 +51,12 @@ pub enum EgressMessages<
     ProxyLimit: Get<u32>,
     SnapshotAccLimit: Get<u32>,
     WithdrawalLimit: Get<u32>,
-    UnpaddedReportSizeLimit: Get<u32>,
 > {
     Withdrawal(Withdrawal<AccountId, Balance>),
     EnclaveSnapshot(
         EnclaveSnapshot<AccountId, Balance, ProxyLimit, SnapshotAccLimit, WithdrawalLimit>,
     ),
-    RegisterEnclave(BoundedVec<u8, UnpaddedReportSizeLimit>),
+    RegisterEnclave(BoundedVec<u8, UnpaddedReportSize>),
 }
 
 #[derive(Clone, Encode, Decode, MaxEncodedLen, TypeInfo)]
