@@ -75,6 +75,20 @@ pub struct EnclaveSnapshot<
     pub withdrawals: BoundedVec<Withdrawal<Account, Balance>, WithdrawalLimit>,
 }
 
+impl<
+        Account,
+        Balance: Zero,
+        ProxyLimit: Get<u32>,
+        SnapshotAccLimit: Get<u32>,
+        WithdrawalLimit: Get<u32>,
+    > PartialEq
+    for EnclaveSnapshot<Account, Balance, ProxyLimit, SnapshotAccLimit, WithdrawalLimit>
+{
+    fn eq(&self, other: &Self) -> bool {
+        self.snapshot_number == other.snapshot_number
+    }
+}
+
 #[derive(Clone, Encode, Decode, MaxEncodedLen, TypeInfo, Debug, PartialEq)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 pub struct Withdrawal<AccountId, Balance> {
