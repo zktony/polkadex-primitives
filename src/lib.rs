@@ -24,6 +24,7 @@ pub mod ocex;
 pub use frame_support::storage::bounded_vec::BoundedVec;
 
 use frame_support::traits::Get;
+#[cfg(feature = "std")]
 use serde::{Deserialize, Serialize};
 use sp_runtime::{
     generic,
@@ -74,7 +75,8 @@ pub type Block = generic::Block<Header, OpaqueExtrinsic>;
 pub type BlockId = generic::BlockId<Block>;
 
 // TODO: Figure out the actual bound given below
-#[derive(Debug, Clone, Copy, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq)]
+#[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 pub struct ProxyLimit;
 impl Get<u32> for ProxyLimit {
     fn get() -> u32 {
@@ -82,14 +84,18 @@ impl Get<u32> for ProxyLimit {
     }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq)]
+#[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 pub struct WithdrawalLimit;
 impl Get<u32> for WithdrawalLimit {
     fn get() -> u32 {
         500
     }
 }
-#[derive(Debug, Clone, Copy, PartialEq, Deserialize, Serialize)]
+
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+#[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 pub struct SnapshotAccLimit;
 impl Get<u32> for SnapshotAccLimit {
     fn get() -> u32 {
