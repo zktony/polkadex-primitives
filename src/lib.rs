@@ -21,6 +21,7 @@
 
 pub mod assets;
 pub mod ocex;
+pub use frame_support::storage::bounded_vec::BoundedVec;
 
 use frame_support::traits::Get;
 use serde::{Deserialize, Serialize};
