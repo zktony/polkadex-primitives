@@ -19,21 +19,18 @@
 
 #![cfg_attr(not(feature = "std"), no_std)]
 
-pub use frame_support::storage::bounded_vec::BoundedVec;
-use sp_core::H256;
+pub mod assets;
+pub mod ocex;
+
+use frame_support::traits::Get;
 use sp_runtime::{
     generic,
     traits::{BlakeTwo256, IdentifyAccount, Verify},
     MultiSignature, OpaqueExtrinsic,
 };
-pub mod assets;
-pub mod ocex;
 
 // reexports:
 pub use assets::*;
-
-/// Worker specific state hash
-pub type ShardIdentifier = H256;
 
 /// An index to a block.
 pub type BlockNumber = u32;
@@ -74,35 +71,22 @@ pub type Block = generic::Block<Header, OpaqueExtrinsic>;
 /// Block ID.
 pub type BlockId = generic::BlockId<Block>;
 
-// /// App-specific crypto used for reporting equivocation/misbehavior in BABE and
-// /// GRANDPA. Any rewards for misbehavior reporting will be paid out to this
-// /// account.
-// pub mod report {
-//     use frame_system::offchain::AppCrypto;
-//     use sp_core::crypto::{key_types, KeyTypeId};
-//
-//     use super::{Signature, Verify};
-//
-//     /// Key type for the reporting module. Used for reporting BABE and GRANDPA
-//     /// equivocations.
-//     pub const KEY_TYPE: KeyTypeId = key_types::REPORTING;
-//
-//     mod app {
-//         use sp_application_crypto::{app_crypto, sr25519};
-//
-//         app_crypto!(sr25519, super::KEY_TYPE);
-//     }
-//
-//     /// Identity of the equivocation/misbehavior reporter.
-//     pub type ReporterId = app::Public;
-//
-//     /// An `AppCrypto` type to allow submitting signed transactions using the reporting
-//     /// application key as signer.
-//     pub struct ReporterAppCrypto;
-//
-//     impl AppCrypto<<Signature as Verify>::Signer, Signature> for ReporterAppCrypto {
-//         type RuntimeAppPublic = ReporterId;
-//         type GenericPublic = sp_core::sr25519::Public;
-//         type GenericSignature = sp_core::sr25519::Signature;
-//     }
-// }
+// TODO: Figure out the actual bound given below
+pub struct ProxyLimit;
+impl Get<u32> for ProxyLimit {
+    fn get() -> u32 {
+        3
+    }
+}
+pub struct WithdrawalLimit;
+impl Get<u32> for WithdrawalLimit {
+    fn get() -> u32 {
+        500
+    }
+}
+pub struct SnapshotAccLimit;
+impl Get<u32> for SnapshotAccLimit {
+    fn get() -> u32 {
+        1000
+    }
+}

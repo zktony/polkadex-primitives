@@ -1,4 +1,4 @@
-use crate::AssetId;
+use crate::assets::AssetId;
 use codec::{Decode, Encode, MaxEncodedLen};
 use frame_support::traits::Get;
 use frame_support::BoundedVec;
@@ -30,7 +30,6 @@ pub enum IngressMessages<AccountId, Balance> {
 
 /// Provides size of the unpadded report
 pub struct UnpaddedReportSize;
-
 impl Get<u32> for UnpaddedReportSize {
     fn get() -> u32 {
         432
