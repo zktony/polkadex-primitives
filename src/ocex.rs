@@ -36,7 +36,7 @@ impl Get<u32> for UnpaddedReportSize {
     }
 }
 
-#[derive(Clone, Encode, Decode, MaxEncodedLen, TypeInfo)]
+#[derive(Clone, Encode, Decode, MaxEncodedLen, TypeInfo, Debug)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 #[scale_info(skip_type_params(ProxyLimit, SnapshotAccLimit, WithdrawalLimit))]
 pub enum EgressMessages<
@@ -53,7 +53,7 @@ pub enum EgressMessages<
     RegisterEnclave(BoundedVec<u8, UnpaddedReportSize>),
 }
 
-#[derive(Clone, Encode, Decode, MaxEncodedLen, TypeInfo)]
+#[derive(Clone, Encode, Decode, MaxEncodedLen, TypeInfo, Debug)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 #[scale_info(skip_type_params(ProxyLimit, SnapshotAccLimit, WithdrawalLimit))]
 pub struct EnclaveSnapshot<
@@ -97,7 +97,7 @@ pub struct Withdrawal<AccountId, Balance> {
     pub asset: AssetId,
 }
 
-#[derive(Clone, Encode, Decode, MaxEncodedLen, TypeInfo)]
+#[derive(Clone, Encode, Decode, MaxEncodedLen, TypeInfo, Debug)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 #[scale_info(skip_type_params(ProxyLimit))]
 pub struct AccountInfo<Account, Balance: Zero, ProxyLimit: Get<u32>> {
