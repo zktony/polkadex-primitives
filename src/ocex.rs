@@ -4,7 +4,6 @@ use frame_support::traits::Get;
 use frame_support::BoundedVec;
 use scale_info::TypeInfo;
 
-use crate::SnapshotAccLimit;
 #[cfg(feature = "std")]
 use serde::{Deserialize, Serialize};
 use sp_core::H256;
@@ -37,7 +36,7 @@ impl Get<u32> for UnpaddedReportSize {
     }
 }
 
-#[derive(Clone, Encode, Decode, MaxEncodedLen, TypeInfo)]
+#[derive(Clone, Encode, Decode, MaxEncodedLen, TypeInfo, Debug)]
 // #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 #[scale_info(skip_type_params(ProxyLimit, SnapshotAccLimit, WithdrawalLimit))]
 pub enum EgressMessages<
