@@ -104,6 +104,7 @@ pub struct Withdrawal<AccountId, Balance> {
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 #[scale_info(skip_type_params(ProxyLimit))]
 pub struct AccountInfo<Account, Balance: Zero, ProxyLimit: Get<u32>> {
+    pub main_account: Account,
     pub proxies: BoundedVec<Account, ProxyLimit>,
     pub nonce: u32,
     /// quote asset reserved balance
@@ -122,12 +123,10 @@ pub struct AccountInfo<Account, Balance: Zero, ProxyLimit: Get<u32>> {
 impl<Account: PartialEq, Balance: Zero, ProxyLimit: Get<u32>>
     AccountInfo<Account, Balance, ProxyLimit>
 {
-    pub fn new(proxy: Account) -> AccountInfo<Account, Balance, ProxyLimit> {
+    pub fn new(main_account_id: Account) -> AccountInfo<Account, Balance, ProxyLimit> {
         let mut proxies = BoundedVec::default();
-        if let Err(()) = proxies.try_push(proxy) {
-            // It's okay to not handle this error since ProxyLimit is should be greater than one.
-        }
         AccountInfo {
+            main_account : main_account_id,
             proxies,
             nonce: 0,
             quote_reserved: Balance::zero(),
