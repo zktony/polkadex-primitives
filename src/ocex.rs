@@ -38,37 +38,35 @@ impl Get<u32> for UnpaddedReportSize {
 
 #[derive(Clone, Encode, Decode, MaxEncodedLen, TypeInfo, Debug)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
-#[scale_info(skip_type_params(ProxyLimit, SnapshotAccLimit, WithdrawalLimit))]
+#[scale_info(skip_type_params(SnapshotAccLimit, WithdrawalLimit))]
 pub enum EgressMessages<
     AccountId,
     Balance: Zero,
-    ProxyLimit: Get<u32>,
     SnapshotAccLimit: Get<u32>,
     WithdrawalLimit: Get<u32>,
 > {
     Withdrawal(Withdrawal<AccountId, Balance>),
     EnclaveSnapshot(
-        EnclaveSnapshot<AccountId, Balance, ProxyLimit, SnapshotAccLimit, WithdrawalLimit>,
+        EnclaveSnapshot<AccountId, Balance, SnapshotAccLimit, WithdrawalLimit>,
     ),
     RegisterEnclave(BoundedVec<u8, UnpaddedReportSize>),
 }
 
 #[derive(Clone, Encode, Decode, MaxEncodedLen, TypeInfo, Debug)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
-#[scale_info(skip_type_params(ProxyLimit, SnapshotAccLimit, WithdrawalLimit))]
+#[scale_info(skip_type_params(SnapshotAccLimit, WithdrawalLimit))]
 pub struct EnclaveSnapshot<
     Account,
     Balance: Zero,
-    ProxyLimit: Get<u32>,
     SnapshotAccLimit: Get<u32>,
     WithdrawalLimit: Get<u32>,
 > {
     /// Serial number of snapshot.
     pub snapshot_number: u32,
     /// List of accounts directly saved on chain, number of accounts bounded by SnapshotAccLimit
-    pub accounts: BoundedVec<AccountInfo<Account, Balance, ProxyLimit>, SnapshotAccLimit>,
+    pub lmp_accounts: BoundedVec<LMPAccountInfo<Account, Balance>, SnapshotAccLimit>,
     /// Hash of the balance snapshot dump made by enclave. ( dump contains all the accounts in enclave )
-    pub snapshot_whole_hash: H256,
+    pub merkle_root: H256,
     /// Sum of all q_finals of all lmp traders
     pub total_lmp_score: Balance,
     /// Withdrawals
@@ -78,11 +76,10 @@ pub struct EnclaveSnapshot<
 impl<
         Account,
         Balance: Zero,
-        ProxyLimit: Get<u32>,
         SnapshotAccLimit: Get<u32>,
         WithdrawalLimit: Get<u32>,
     > PartialEq
-    for EnclaveSnapshot<Account, Balance, ProxyLimit, SnapshotAccLimit, WithdrawalLimit>
+    for EnclaveSnapshot<Account, Balance, SnapshotAccLimit, WithdrawalLimit>
 {
     fn eq(&self, other: &Self) -> bool {
         self.snapshot_number == other.snapshot_number
@@ -99,53 +96,23 @@ pub struct Withdrawal<AccountId, Balance> {
 
 #[derive(Clone, Encode, Decode, MaxEncodedLen, TypeInfo, Debug)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
-#[scale_info(skip_type_params(ProxyLimit))]
-pub struct AccountInfo<Account, Balance: Zero, ProxyLimit: Get<u32>> {
-    pub proxies: BoundedVec<Account, ProxyLimit>,
-    pub nonce: u32,
-    /// quote asset reserved balance
-    pub quote_reserved: Balance,
-    /// quote asset free balance
-    pub quote_free: Balance,
-    /// base asset reserved balance
-    pub base_reserved: Balance,
-    /// base asset free balance
-    pub base_free: Balance,
-    /// Total Fees paid by this trader
+pub struct LMPAccountInfo<Account, Balance: Zero> {
+    pub main_account: Account,
     pub fee_paid_base_asset: Balance,
     pub fee_paid_quote_asset: Balance,
     pub q_final: Balance,
 }
 
-impl<Account: PartialEq, Balance: Zero, ProxyLimit: Get<u32>>
-    AccountInfo<Account, Balance, ProxyLimit>
+impl<Account: PartialEq, Balance: Zero, >
+    LMPAccountInfo<Account, Balance >
 {
-    pub fn new(proxy: Account) -> AccountInfo<Account, Balance, ProxyLimit> {
-        let mut proxies = BoundedVec::default();
-        if let Err(()) = proxies.try_push(proxy) {
-            // It's okay to not handle this error since ProxyLimit is should be greater than one.
-        }
-        AccountInfo {
-            proxies,
-            nonce: 0,
-            quote_reserved: Balance::zero(),
-            quote_free: Balance::zero(),
-            base_reserved: Balance::zero(),
-            base_free: Balance::zero(),
+    pub fn new(main_account_id: Account) -> LMPAccountInfo<Account, Balance> {
+        LMPAccountInfo {
+            main_account: main_account_id,
             fee_paid_base_asset: Balance::zero(),
             fee_paid_quote_asset: Balance::zero(),
             q_final: Balance::zero(),
         }
-    }
-
-    // Adds a new proxy account
-    pub fn add_proxy(&mut self, proxy: Account) -> Result<(), ()> {
-        self.proxies.try_push(proxy)
-    }
-
-    // Removes a proxy account
-    pub fn remove_proxy(&mut self, proxy: &Account) {
-        self.proxies.retain(|item| item != proxy);
     }
 }
 
