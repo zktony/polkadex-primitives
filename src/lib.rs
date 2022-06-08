@@ -74,6 +74,15 @@ pub type Block = generic::Block<Header, OpaqueExtrinsic>;
 /// Block ID.
 pub type BlockId = generic::BlockId<Block>;
 
+// TODO: Figure out the actual bound given below
+#[derive(Debug, Clone, Copy, PartialEq)]
+#[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
+pub struct ProxyLimit;
+impl Get<u32> for ProxyLimit {
+    fn get() -> u32 {
+        3
+    }
+}
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
