@@ -38,7 +38,7 @@ impl Get<u32> for UnpaddedReportSize {
 
 #[derive(Clone, Encode, Decode, MaxEncodedLen, TypeInfo, Debug)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
-#[scale_info(skip_type_params(ProxyLimit, SnapshotAccLimit, WithdrawalLimit))]
+#[scale_info(skip_type_params(SnapshotAccLimit, WithdrawalLimit))]
 pub enum EgressMessages<
     AccountId,
     Balance: Zero,
@@ -55,7 +55,7 @@ pub enum EgressMessages<
 
 #[derive(Clone, Encode, Decode, MaxEncodedLen, TypeInfo, Debug)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
-#[scale_info(skip_type_params(ProxyLimit, SnapshotAccLimit, WithdrawalLimit))]
+#[scale_info(skip_type_params(SnapshotAccLimit, WithdrawalLimit))]
 pub struct EnclaveSnapshot<
     Account,
     Balance: Zero,
@@ -66,9 +66,11 @@ pub struct EnclaveSnapshot<
     /// Serial number of snapshot.
     pub snapshot_number: u32,
     /// List of accounts directly saved on chain, number of accounts bounded by SnapshotAccLimit
+    pub lmp_accounts: BoundedVec<LMPAccountInfo<Account, Balance>, SnapshotAccLimit>,
+    /// List of accounts  number of accounts bounded by SnapshotAccLimit
     pub accounts: BoundedVec<AccountInfo<Account, Balance, ProxyLimit>, SnapshotAccLimit>,
     /// Hash of the balance snapshot dump made by enclave. ( dump contains all the accounts in enclave )
-    pub snapshot_whole_hash: H256,
+    pub merkle_root: H256,
     /// Sum of all q_finals of all lmp traders
     pub total_lmp_score: Balance,
     /// Withdrawals
@@ -97,10 +99,12 @@ pub struct Withdrawal<AccountId, Balance> {
     pub asset: AssetId,
 }
 
+
 #[derive(Clone, Encode, Decode, MaxEncodedLen, TypeInfo, Debug)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 #[scale_info(skip_type_params(ProxyLimit))]
 pub struct AccountInfo<Account, Balance: Zero, ProxyLimit: Get<u32>> {
+    pub main_account: Account,
     pub proxies: BoundedVec<Account, ProxyLimit>,
     pub nonce: u32,
     /// quote asset reserved balance
@@ -114,18 +118,15 @@ pub struct AccountInfo<Account, Balance: Zero, ProxyLimit: Get<u32>> {
     /// Total Fees paid by this trader
     pub fee_paid_base_asset: Balance,
     pub fee_paid_quote_asset: Balance,
-    pub q_final: Balance,
 }
 
 impl<Account: PartialEq, Balance: Zero, ProxyLimit: Get<u32>>
     AccountInfo<Account, Balance, ProxyLimit>
 {
-    pub fn new(proxy: Account) -> AccountInfo<Account, Balance, ProxyLimit> {
+    pub fn new(main_account_id: Account) -> AccountInfo<Account, Balance, ProxyLimit> {
         let mut proxies = BoundedVec::default();
-        if let Err(()) = proxies.try_push(proxy) {
-            // It's okay to not handle this error since ProxyLimit is should be greater than one.
-        }
         AccountInfo {
+            main_account : main_account_id,
             proxies,
             nonce: 0,
             quote_reserved: Balance::zero(),
@@ -134,7 +135,6 @@ impl<Account: PartialEq, Balance: Zero, ProxyLimit: Get<u32>>
             base_free: Balance::zero(),
             fee_paid_base_asset: Balance::zero(),
             fee_paid_quote_asset: Balance::zero(),
-            q_final: Balance::zero(),
         }
     }
 
@@ -146,6 +146,28 @@ impl<Account: PartialEq, Balance: Zero, ProxyLimit: Get<u32>>
     // Removes a proxy account
     pub fn remove_proxy(&mut self, proxy: &Account) {
         self.proxies.retain(|item| item != proxy);
+    }
+}
+
+#[derive(Clone, Encode, Decode, MaxEncodedLen, TypeInfo, Debug)]
+#[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
+pub struct LMPAccountInfo<Account, Balance: Zero> {
+    pub main_account: Account,
+    pub fee_paid_base_asset: Balance,
+    pub fee_paid_quote_asset: Balance,
+    pub q_final: Balance,
+}
+
+impl<Account: PartialEq, Balance: Zero, >
+    LMPAccountInfo<Account, Balance >
+{
+    pub fn new(main_account_id: Account) -> LMPAccountInfo<Account, Balance> {
+        LMPAccountInfo {
+            main_account: main_account_id,
+            fee_paid_base_asset: Balance::zero(),
+            fee_paid_quote_asset: Balance::zero(),
+            q_final: Balance::zero(),
+        }
     }
 }
 
