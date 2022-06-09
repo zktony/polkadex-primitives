@@ -55,8 +55,8 @@ pub enum EgressMessages<
     SnapshotAccLimit: Get<u32>,
     WithdrawalLimit: Get<u32>,
 > {
-    EnclaveAccountDump(EnclaveAccountInfoDump<AccountId,Balance,ProxyLimit>, Signature),
-    EnclaveSnapshot(EnclaveSnapshot<AccountId, Balance, SnapshotAccLimit, WithdrawalLimit>, Signature),
+    EnclaveAccountDump((AssetId,AssetId),EnclaveAccountInfoDump<AccountId,Balance,ProxyLimit>, Signature),
+    EnclaveSnapshot((AssetId,AssetId),EnclaveSnapshot<AccountId, Balance, SnapshotAccLimit, WithdrawalLimit>, Signature),
     RegisterEnclave(BoundedVec<u8, UnpaddedReportSize>),
 }
 
