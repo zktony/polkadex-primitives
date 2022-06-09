@@ -7,6 +7,7 @@ use scale_info::TypeInfo;
 #[cfg(feature = "std")]
 use serde::{Deserialize, Serialize};
 use sp_core::H256;
+use sp_core::sr25519::Signature;
 use sp_runtime::traits::Zero;
 
 #[derive(Clone, Encode, Decode, MaxEncodedLen, TypeInfo, Debug, PartialEq)]
@@ -54,11 +55,18 @@ pub enum EgressMessages<
     SnapshotAccLimit: Get<u32>,
     WithdrawalLimit: Get<u32>,
 > {
-    EnclaveSnapshot(
-        EnclaveSnapshot<AccountId, Balance, SnapshotAccLimit, WithdrawalLimit>,
-        BoundedVec<AccountInfo<AccountId,Balance,ProxyLimit>,AccountInfoDumpLimit>
-    ),
+    EnclaveAccountDump(EnclaveAccountInfoDump<AccountId,Balance,ProxyLimit>, Signature),
+    EnclaveSnapshot(EnclaveSnapshot<AccountId, Balance, SnapshotAccLimit, WithdrawalLimit>, Signature),
     RegisterEnclave(BoundedVec<u8, UnpaddedReportSize>),
+}
+
+#[derive(Clone, Encode, Decode, MaxEncodedLen, TypeInfo, Debug)]
+#[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
+pub struct EnclaveAccountInfoDump<AccountId,Balance: Zero, ProxyLimit: Get<u32>,> {
+    /// Serial number of snapshot.
+    pub snapshot_number: u32,
+    /// All Accounts present in enclave
+    pub accounts: BoundedVec<AccountInfo<AccountId,Balance,ProxyLimit>,AccountInfoDumpLimit>
 }
 
 #[derive(Clone, Encode, Decode, MaxEncodedLen, TypeInfo, Debug)]
