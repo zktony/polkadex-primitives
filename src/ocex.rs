@@ -36,6 +36,14 @@ impl Get<u32> for UnpaddedReportSize {
     }
 }
 
+/// Provides maximum number of accounts possible in enclave data dump
+pub struct AccountInfoDumpLimit;
+impl Get<u32> for AccountInfoDumpLimit {
+    fn get() -> u32 {
+        10000000
+    }
+}
+
 #[derive(Clone, Encode, Decode, MaxEncodedLen, TypeInfo, Debug)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 #[scale_info(skip_type_params(SnapshotAccLimit, WithdrawalLimit))]
@@ -46,9 +54,9 @@ pub enum EgressMessages<
     SnapshotAccLimit: Get<u32>,
     WithdrawalLimit: Get<u32>,
 > {
-    Withdrawal(Withdrawal<AccountId, Balance>),
     EnclaveSnapshot(
-        EnclaveSnapshot<AccountId, Balance, ProxyLimit, SnapshotAccLimit, WithdrawalLimit>,
+        EnclaveSnapshot<AccountId, Balance, SnapshotAccLimit, WithdrawalLimit>,
+        BoundedVec<AccountInfo<AccountId,Balance,ProxyLimit>,AccountInfoDumpLimit>
     ),
     RegisterEnclave(BoundedVec<u8, UnpaddedReportSize>),
 }
@@ -59,7 +67,6 @@ pub enum EgressMessages<
 pub struct EnclaveSnapshot<
     Account,
     Balance: Zero,
-    ProxyLimit: Get<u32>,
     SnapshotAccLimit: Get<u32>,
     WithdrawalLimit: Get<u32>,
 > {
@@ -67,24 +74,22 @@ pub struct EnclaveSnapshot<
     pub snapshot_number: u32,
     /// List of accounts directly saved on chain, number of accounts bounded by SnapshotAccLimit
     pub lmp_accounts: BoundedVec<LMPAccountInfo<Account, Balance>, SnapshotAccLimit>,
-    /// List of accounts  number of accounts bounded by SnapshotAccLimit
-    pub accounts: BoundedVec<AccountInfo<Account, Balance, ProxyLimit>, SnapshotAccLimit>,
     /// Hash of the balance snapshot dump made by enclave. ( dump contains all the accounts in enclave )
     pub merkle_root: H256,
     /// Sum of all q_finals of all lmp traders
     pub total_lmp_score: Balance,
     /// Withdrawals
     pub withdrawals: BoundedVec<Withdrawal<Account, Balance>, WithdrawalLimit>,
+    // TODO: Add base and quote fees collected by the exchange.
 }
 
 impl<
         Account,
         Balance: Zero,
-        ProxyLimit: Get<u32>,
         SnapshotAccLimit: Get<u32>,
         WithdrawalLimit: Get<u32>,
     > PartialEq
-    for EnclaveSnapshot<Account, Balance, ProxyLimit, SnapshotAccLimit, WithdrawalLimit>
+    for EnclaveSnapshot<Account, Balance, SnapshotAccLimit, WithdrawalLimit>
 {
     fn eq(&self, other: &Self) -> bool {
         self.snapshot_number == other.snapshot_number
