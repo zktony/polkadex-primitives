@@ -35,6 +35,7 @@ use sp_core::RuntimeDebug;
     RuntimeDebug,
     TypeInfo,
     MaxEncodedLen,
+    Hash,
 )]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 pub enum AssetId {
