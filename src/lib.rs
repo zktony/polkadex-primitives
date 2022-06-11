@@ -20,7 +20,13 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
 pub mod assets;
+pub mod egress;
+pub mod fees;
+pub mod ingress;
 pub mod ocex;
+pub mod snapshot;
+pub mod withdrawal;
+
 pub use frame_support::storage::bounded_vec::BoundedVec;
 
 use frame_support::traits::Get;
@@ -86,13 +92,21 @@ impl Get<u32> for ProxyLimit {
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
+pub struct AssetsLimit;
+impl Get<u32> for AssetsLimit {
+    fn get() -> u32 {
+        50
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+#[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 pub struct WithdrawalLimit;
 impl Get<u32> for WithdrawalLimit {
     fn get() -> u32 {
         500
     }
 }
-
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
