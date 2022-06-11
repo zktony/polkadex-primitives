@@ -9,8 +9,8 @@ use scale_info::TypeInfo;
 pub enum IngressMessages<AccountId, Balance> {
     // Start Enclave
     StartEnclave(OCEXConfig<AccountId>),
-    // Register Trading Pair
-    RegisterTradingPair(TradingPairConfig<Balance>),
+    // Open Trading Pair
+    OpenTradingPair(TradingPairConfig<Balance>),
     // Register User ( main, proxy)
     RegisterUser(AccountId, AccountId),
     // Main Acc, Assetid, Amount
@@ -21,6 +21,8 @@ pub enum IngressMessages<AccountId, Balance> {
     RemoveProxy(AccountId, AccountId),
     // Enclave registration confirmation
     EnclaveRegistered(AccountId),
-    // Shutdown Trading Pair
-    ShutdownTradingPair(TradingPairConfig<Balance>),
+    // Shutdown Exchange
+    Shutdown,
+    // Close Trading Pair
+    CloseTradingPair(TradingPairConfig<Balance>),
 }
