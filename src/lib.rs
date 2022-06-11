@@ -21,6 +21,12 @@
 
 pub mod assets;
 pub mod ocex;
+pub mod fees;
+pub mod ingress;
+pub mod egress;
+pub mod snapshot;
+pub mod withdrawal;
+
 pub use frame_support::storage::bounded_vec::BoundedVec;
 
 use frame_support::traits::Get;
@@ -81,6 +87,15 @@ pub struct ProxyLimit;
 impl Get<u32> for ProxyLimit {
     fn get() -> u32 {
         3
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+#[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
+pub struct AssetsLimit;
+impl Get<u32> for AssetsLimit {
+    fn get() -> u32 {
+        50
     }
 }
 
