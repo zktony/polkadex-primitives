@@ -1,7 +1,7 @@
-use sp_runtime::traits::Zero;
-use codec::{Encode,Decode};
+use codec::{Decode, Encode};
 #[cfg(feature = "std")]
 use serde::{Deserialize, Serialize};
+use sp_runtime::traits::Zero;
 
 #[derive(Copy, Clone, Encode, Decode, PartialEq, Debug)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]

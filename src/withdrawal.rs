@@ -1,7 +1,5 @@
-
 use crate::assets::AssetId;
 use codec::{Decode, Encode, MaxEncodedLen};
-
 
 use scale_info::TypeInfo;
 #[cfg(feature = "std")]

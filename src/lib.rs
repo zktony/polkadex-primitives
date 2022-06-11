@@ -20,10 +20,10 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
 pub mod assets;
-pub mod ocex;
+pub mod egress;
 pub mod fees;
 pub mod ingress;
-pub mod egress;
+pub mod ocex;
 pub mod snapshot;
 pub mod withdrawal;
 
@@ -107,7 +107,6 @@ impl Get<u32> for WithdrawalLimit {
         500
     }
 }
-
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]

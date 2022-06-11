@@ -1,8 +1,7 @@
+use crate::snapshot::{EnclaveAccountInfoDump, EnclaveSnapshot};
+use crate::Signature;
 use frame_support::BoundedVec;
 use sp_runtime::traits::{Get, Zero};
-use crate::Signature;
-use crate::snapshot::{EnclaveAccountInfoDump, EnclaveSnapshot};
-
 
 use codec::{Decode, Encode};
 use scale_info::TypeInfo;
@@ -16,10 +15,16 @@ pub enum EgressMessages<
     AccountId: Ord,
     Balance: Zero + Clone,
     ProxyLimit: Get<u32>,
-    WithdrawalLimit: Get<u32>
+    WithdrawalLimit: Get<u32>,
 > {
-    EnclaveAccountDump(EnclaveAccountInfoDump<AccountId,Balance,ProxyLimit>, Signature),
-    EnclaveSnapshot(EnclaveSnapshot<AccountId, Balance, WithdrawalLimit>, Signature),
+    EnclaveAccountDump(
+        EnclaveAccountInfoDump<AccountId, Balance, ProxyLimit>,
+        Signature,
+    ),
+    EnclaveSnapshot(
+        EnclaveSnapshot<AccountId, Balance, WithdrawalLimit>,
+        Signature,
+    ),
     RegisterEnclave(BoundedVec<u8, UnpaddedReportSize>),
 }
 
