@@ -89,6 +89,15 @@ impl Get<u32> for ProxyLimit {
         3
     }
 }
+// TODO: Figure out the actual bound given below
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct ProxyLimit;
+impl Get<u32> for ProxyLimit {
+    fn get() -> u32 {
+        3
+    }
+}
+
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
@@ -99,6 +108,18 @@ impl Get<u32> for AssetsLimit {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct WithdrawalLimit;
+impl Get<u32> for WithdrawalLimit {
+    fn get() -> u32 {
+        500
+    }
+}
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct SnapshotAccLimit;
+impl Get<u32> for SnapshotAccLimit {
+    fn get() -> u32 {
+        1000
 #[derive(Debug, Clone, Copy, PartialEq)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 pub struct WithdrawalLimit;
