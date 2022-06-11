@@ -20,15 +20,26 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
 pub mod assets;
-pub mod common_types;
+pub mod egress;
+pub mod fees;
+pub mod ingress;
 pub mod ocex;
+pub mod snapshot;
+pub mod withdrawal;
+
+pub use frame_support::storage::bounded_vec::BoundedVec;
 
 use frame_support::traits::Get;
+#[cfg(feature = "std")]
+use serde::{Deserialize, Serialize};
 use sp_runtime::{
     generic,
     traits::{BlakeTwo256, IdentifyAccount, Verify},
     MultiSignature, OpaqueExtrinsic,
 };
+
+// reexports:
+pub use assets::*;
 
 /// An index to a block.
 pub type BlockNumber = u32;
@@ -71,6 +82,7 @@ pub type BlockId = generic::BlockId<Block>;
 
 // TODO: Figure out the actual bound given below
 #[derive(Debug, Clone, Copy, PartialEq)]
+#[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 pub struct ProxyLimit;
 impl Get<u32> for ProxyLimit {
     fn get() -> u32 {
@@ -79,16 +91,27 @@ impl Get<u32> for ProxyLimit {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-pub struct WithdrawalLimit;
-impl Get<u32> for WithdrawalLimit {
+// #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
+pub struct AssetsLimit;
+impl Get<u32> for AssetsLimit {
     fn get() -> u32 {
-        500
+        50
     }
 }
+
 #[derive(Debug, Clone, Copy, PartialEq)]
+// #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 pub struct SnapshotAccLimit;
 impl Get<u32> for SnapshotAccLimit {
     fn get() -> u32 {
         1000
+    }
+}
+#[derive(Debug, Clone, Copy, PartialEq)]
+// #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
+pub struct WithdrawalLimit;
+impl Get<u32> for WithdrawalLimit {
+    fn get() -> u32 {
+        500
     }
 }

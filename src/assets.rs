@@ -28,6 +28,7 @@ use sp_core::RuntimeDebug;
     Decode,
     Copy,
     Clone,
+    Hash,
     PartialEq,
     Eq,
     Ord,
