@@ -1,15 +1,14 @@
 use crate::snapshot::{EnclaveAccountInfoDump, EnclaveSnapshot};
 use crate::Signature;
+use frame_support::traits::Get;
 use frame_support::BoundedVec;
-use sp_runtime::traits::{Get, Zero};
+use sp_runtime::traits::Zero;
 
 use codec::{Decode, Encode};
 use scale_info::TypeInfo;
-#[cfg(feature = "std")]
-use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Encode, Decode, TypeInfo, Debug)]
-#[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
+// #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 #[scale_info(skip_type_params(SnapshotAccLimit, WithdrawalLimit))]
 pub enum EgressMessages<
     AccountId: Ord,

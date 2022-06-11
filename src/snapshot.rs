@@ -2,13 +2,12 @@ use crate::ocex::AccountInfo;
 use crate::withdrawal::Withdrawal;
 use frame_support::BoundedVec;
 use sp_core::H256;
-use sp_runtime::traits::{Get, Zero};
+use sp_runtime::traits::Zero;
 use std::collections::BTreeMap;
 
 use codec::{Decode, Encode};
+use frame_support::traits::Get;
 use scale_info::TypeInfo;
-#[cfg(feature = "std")]
-use serde::{Deserialize, Serialize};
 
 /// Provides maximum number of accounts possible in enclave data dump
 pub struct AccountInfoDumpLimit;
@@ -19,7 +18,7 @@ impl Get<u32> for AccountInfoDumpLimit {
 }
 
 #[derive(Clone, Encode, Decode, TypeInfo, Debug)]
-#[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
+// #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 pub struct EnclaveAccountInfoDump<AccountId: Ord, Balance: Zero + Clone, ProxyLimit: Get<u32>> {
     /// Serial number of snapshot.
     pub snapshot_number: u32,
@@ -28,7 +27,7 @@ pub struct EnclaveAccountInfoDump<AccountId: Ord, Balance: Zero + Clone, ProxyLi
 }
 
 #[derive(Clone, Encode, Decode, TypeInfo, Debug)]
-#[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
+// #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 #[scale_info(skip_type_params(SnapshotAccLimit, WithdrawalLimit))]
 pub struct EnclaveSnapshot<Account, Balance: Zero + Clone, WithdrawalLimit: Get<u32>> {
     /// Serial number of snapshot.

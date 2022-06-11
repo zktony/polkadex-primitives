@@ -5,14 +5,11 @@ use frame_support::BoundedVec;
 use scale_info::TypeInfo;
 use std::collections::BTreeMap;
 
-#[cfg(feature = "std")]
-use serde::{Deserialize, Serialize};
-
 use crate::fees::FeeConfig;
 use sp_runtime::traits::Zero;
 
 #[derive(Clone, Encode, Decode, TypeInfo, Debug)]
-#[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
+// #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 #[scale_info(skip_type_params(ProxyLimit))]
 pub struct AccountInfo<Account, Balance: Zero + Clone, ProxyLimit: Get<u32>> {
     pub main_account: Account,
@@ -59,13 +56,13 @@ impl<Account: PartialEq, Balance: Zero + Clone, ProxyLimit: Get<u32>>
 }
 
 #[derive(Clone, Encode, Decode, MaxEncodedLen, TypeInfo, Debug, PartialEq)]
-#[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
+// #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 pub struct OCEXConfig<AccountId> {
     pub enclave_id: AccountId,
 }
 
 #[derive(Clone, Encode, Decode, MaxEncodedLen, TypeInfo, Debug, PartialEq)]
-#[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
+// #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 pub struct TradingPairConfig<Balance> {
     pub base_asset: AssetId,
     pub quote_asset: AssetId,
