@@ -21,6 +21,6 @@ pub enum IngressMessages<AccountId, Balance> {
     RemoveProxy(AccountId, AccountId),
     // Enclave registration confirmation
     EnclaveRegistered(AccountId),
-    // Enclave Shutdown request
-    ShutdownEnclave(AccountId),
+    // Shutdown Trading Pair
+    ShutdownTradingPair(TradingPairConfig<Balance>),
 }

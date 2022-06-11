@@ -1,9 +1,10 @@
 use codec::{Decode, Encode};
+use scale_info::TypeInfo;
 #[cfg(feature = "std")]
 use serde::{Deserialize, Serialize};
 use sp_runtime::traits::Zero;
 
-#[derive(Copy, Clone, Encode, Decode, PartialEq, Debug)]
+#[derive(Copy, Clone, Encode, Decode, PartialEq, Debug, TypeInfo)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 pub struct FeeConfig<Balance: Zero> {
     pub(crate) maker_fraction: Balance,
