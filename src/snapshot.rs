@@ -3,7 +3,7 @@ use crate::withdrawal::Withdrawal;
 use frame_support::BoundedVec;
 use sp_core::H256;
 use sp_runtime::traits::Zero;
-use std::collections::BTreeMap;
+use sp_std::collections::btree_map::BTreeMap;
 
 use codec::{Decode, Encode};
 use frame_support::traits::Get;

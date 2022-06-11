@@ -11,6 +11,7 @@ serde = { version = "1.0.136", optional = true }
 scale-info = { version = "2.0.1", default-features = false, features = ["derive"] }
 frame-system = { default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v0.9.19" }
 sp-core = { default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v0.9.19" }
+sp-std = { default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v0.9.19" }
 sp-runtime = { default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v0.9.19" }
 sp-application-crypto = { default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v0.9.19" }
 frame-support = { default-features = false, git = "https://github.com/paritytech/substrate.git",  branch = "polkadot-v0.9.19" }
@@ -29,6 +30,7 @@ std = [
     "frame-support/std",
     "sp-application-crypto/std",
     "sp-core/std",
+    "sp-std/std",
     "sp-runtime/std",
 ]
 full_crypto = ['sp-core/full_crypto']
