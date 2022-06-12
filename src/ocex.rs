@@ -73,4 +73,6 @@ pub struct TradingPairConfig<Balance> {
     pub max_trade_amount: Balance,
     pub min_order_qty: Balance,
     pub max_order_qty: Balance,
+    pub min_depth: Balance,
+    pub max_spread: Balance,
 }
