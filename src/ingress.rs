@@ -5,6 +5,7 @@ use serde::{Deserialize, Serialize};
 
 use codec::{Decode, Encode, MaxEncodedLen};
 use scale_info::TypeInfo;
+use sp_core::H256;
 
 #[derive(Clone, Encode, Decode, MaxEncodedLen, TypeInfo, Debug, PartialEq)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
@@ -27,4 +28,6 @@ pub enum IngressMessages<AccountId, Balance> {
     Shutdown,
     // Close Trading Pair
     CloseTradingPair(TradingPairConfig<Balance>),
+    // Latest snapshot (MerkelRoot, snapshot_no)
+    LastestSnapshot(H256, u32)
 }
